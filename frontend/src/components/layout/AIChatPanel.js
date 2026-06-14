@@ -13,6 +13,7 @@ export default function AIChatPanel() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const panelRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -31,6 +32,22 @@ export default function AIChatPanel() {
     window.addEventListener('open-ai-chat', handleOpenChat);
     return () => window.removeEventListener('open-ai-chat', handleOpenChat);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && panelRef.current && !panelRef.current.contains(event.target)) {
+        // Make sure the click wasn't on the toggle button
+        if (!event.target.closest('.ai-chat-toggle')) {
+          setIsOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -110,7 +127,7 @@ export default function AIChatPanel() {
         {isOpen ? '✕' : '✨'}
       </button>
 
-      <div className={`ai-chat-panel ${isOpen ? 'open' : ''}`}>
+      <div ref={panelRef} className={`ai-chat-panel ${isOpen ? 'open' : ''}`}>
         <div className="ai-chat-header">
           <div className="ai-chat-header-title">
             <div className="ai-dot"></div>
