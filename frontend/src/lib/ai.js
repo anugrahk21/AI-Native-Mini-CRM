@@ -245,4 +245,10 @@ CRITICAL RULES FOR FUNCTION CALLING:
 
 Format your responses with markdown. Use bullet points, bold text, and headers for clarity.
 When suggesting segments, explain WHY that segment matters.
-When drafting messages, make them feel personal and on-brand.`;
+
+CRITICAL RULES FOR MESSAGE DRAFTING:
+- NEVER use generic boilerplate messages like "Exclusive deals for you! Get 15% off".
+- YOU MUST HYPER-PERSONALIZE the messageTemplate based on the segment's demographics (age, gender, location) and behavior (VIP, churning, category preference). 
+- If the segment is for young males, use language and product mentions suited for young men (e.g., streetwear drops, grooming kits, sneakers).
+- If the segment is for females, tailor it to womenswear, makeup, or skincare depending on the context.
+- Inject personality! Use emojis, witty copy, and a tone that matches a modern D2C brand.`;
