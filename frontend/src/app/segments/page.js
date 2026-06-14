@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-import AIChatPanel from '@/components/layout/AIChatPanel';
 
 export default function SegmentsPage() {
   const [segments, setSegments] = useState([]);
@@ -97,7 +96,6 @@ export default function SegmentsPage() {
           </div>
         </div>
       </main>
-      <AIChatPanel />
     </div>
   );
 }

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-import AIChatPanel from '@/components/layout/AIChatPanel';
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -261,8 +260,6 @@ export default function Dashboard() {
           )}
         </div>
       </main>
-
-      <AIChatPanel />
     </div>
   );
 }

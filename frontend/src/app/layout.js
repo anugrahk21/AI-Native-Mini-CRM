@@ -1,4 +1,5 @@
 import "./globals.css";
+import AIChatPanel from '@/components/layout/AIChatPanel';
 
 export const metadata = {
   title: "crm.ai — AI-Native Mini CRM",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {children}
+        <AIChatPanel />
       </body>
     </html>
   );

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-import AIChatPanel from '@/components/layout/AIChatPanel';
 import { formatDate, formatCurrency } from '@/lib/utils';
 
 export default function CustomersPage() {
@@ -159,7 +158,6 @@ export default function CustomersPage() {
           </div>
         </div>
       </main>
-      <AIChatPanel />
     </div>
   );
 }

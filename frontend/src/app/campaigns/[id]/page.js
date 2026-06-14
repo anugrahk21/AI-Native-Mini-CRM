@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-import AIChatPanel from '@/components/layout/AIChatPanel';
 import { calcPercentage, getChannelIcon } from '@/lib/utils';
 
 export default function CampaignDetailPage() {
@@ -205,7 +204,6 @@ export default function CampaignDetailPage() {
           </div>
         </div>
       </main>
-      <AIChatPanel />
     </div>
   );
 }

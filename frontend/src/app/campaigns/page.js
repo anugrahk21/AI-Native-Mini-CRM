@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-import AIChatPanel from '@/components/layout/AIChatPanel';
 import { getChannelIcon, getStatusColor, formatDate } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -130,7 +129,6 @@ export default function CampaignsPage() {
           </div>
         </div>
       </main>
-      <AIChatPanel />
     </div>
   );
 }
