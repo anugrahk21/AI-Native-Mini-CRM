@@ -116,15 +116,24 @@ export default function AIChatPanel() {
             <div className="ai-dot"></div>
             crm.ai Assistant
           </div>
-          <button
-            className="btn btn-ghost btn-sm"
-            onClick={() => {
-              setMessages([messages[0]]);
-            }}
-            title="Clear chat"
-          >
-            🗑️
-          </button>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={() => {
+                setMessages([messages[0]]);
+              }}
+              title="Clear chat"
+            >
+              🗑️
+            </button>
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={() => setIsOpen(false)}
+              title="Close panel"
+            >
+              ✖️
+            </button>
+          </div>
         </div>
 
         <div className="ai-chat-messages">
