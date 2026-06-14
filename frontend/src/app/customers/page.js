@@ -9,41 +9,44 @@ import { formatDate, formatCurrency } from '@/lib/utils';
 export default function CustomersPage() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
 
-  // Debounce the search input
+  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (debouncedSearch !== search) {
-        setDebouncedSearch(search);
-        setPage(1); // Reset to page 1 when search term actually changes
-      }
-    }, 400);
+      setSearch(searchInput);
+    }, 300);
     return () => clearTimeout(timer);
-  }, [search, debouncedSearch]);
+  }, [searchInput]);
 
   useEffect(() => {
-    fetchCustomers();
-  }, [page, debouncedSearch]);
+    let active = true;
 
-  const fetchCustomers = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/customers?page=${page}&limit=10&search=${debouncedSearch}`);
-      const data = await res.json();
-      setCustomers(data.customers || []);
-      setTotalPages(data.totalPages || 1);
-      setTotal(data.total || 0);
-    } catch (error) {
-      console.error('Failed to fetch customers:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchCustomers = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/customers?page=${page}&limit=10&search=${search}`);
+        const data = await res.json();
+        if (active) {
+          setCustomers(data.customers || []);
+          setTotalPages(data.totalPages || 1);
+          setTotal(data.total || 0);
+        }
+      } catch (error) {
+        console.error('Failed to fetch customers:', error);
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
+    fetchCustomers();
+    
+    return () => { active = false; };
+  }, [page, search]);
 
   const getBadgeClass = (tag) => {
     const map = {
@@ -76,8 +79,8 @@ export default function CustomersPage() {
                 type="text" 
                 className="input" 
                 placeholder="Search by name, email or phone..." 
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={searchInput}
+                onChange={(e) => { setSearchInput(e.target.value); setPage(1); }}
                 style={{ maxWidth: 300 }}
               />
             </div>
