@@ -32,6 +32,20 @@ export default function CampaignsPage() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this campaign? This cannot be undone.')) return;
+    try {
+      const res = await fetch(`/api/campaigns/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        fetchCampaigns();
+      } else {
+        alert('Failed to delete campaign');
+      }
+    } catch (error) {
+      console.error('Error deleting campaign:', error);
+    }
+  };
+
   const getStatusBadge = (status) => {
     const map = {
       draft: 'badge-yellow',
@@ -100,9 +114,12 @@ export default function CampaignsPage() {
                         <td style={{ color: 'var(--accent-purple)' }}>{c.stats?.opened || 0}</td>
                         <td>{formatDate(new Date(c.createdAt))}</td>
                         <td>
-                          <Link href={`/campaigns/${c._id}`} className="btn btn-secondary btn-sm">
-                            View
-                          </Link>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <Link href={`/campaigns/${c._id}`} className="btn btn-secondary btn-sm">
+                              View
+                            </Link>
+                            <button className="btn btn-secondary btn-sm" style={{ color: '#ef4444' }} onClick={() => handleDelete(c._id)}>Delete</button>
+                          </div>
                         </td>
                       </tr>
                     ))}

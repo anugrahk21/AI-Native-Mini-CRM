@@ -36,3 +36,28 @@ export async function GET(request, { params }) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(request, { params }) {
+  try {
+    const campaigns = await getCollection('campaigns');
+    const { id } = await params;
+    
+    let objectId;
+    try {
+      objectId = new ObjectId(id);
+    } catch (e) {
+      objectId = id;
+    }
+    
+    const result = await campaigns.deleteOne({ _id: objectId });
+    
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: 'Campaign not found' }, { status: 404 });
+    }
+    
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting campaign:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

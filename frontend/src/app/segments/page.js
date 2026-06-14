@@ -30,6 +30,21 @@ export default function SegmentsPage() {
     }
   };
 
+  const handleDelete = async (id, e) => {
+    e.stopPropagation();
+    if (!confirm('Are you sure you want to delete this segment? This cannot be undone.')) return;
+    try {
+      const res = await fetch(`/api/segments/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        fetchSegments();
+      } else {
+        alert('Failed to delete segment');
+      }
+    } catch (error) {
+      console.error('Error deleting segment:', error);
+    }
+  };
+
   return (
     <div className="app-layout">
       <Sidebar />
@@ -62,7 +77,12 @@ export default function SegmentsPage() {
               ))
             ) : segments.map(seg => (
               <div key={seg._id} className="glass-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: 8, color: 'var(--text-primary)' }}>{seg.name}</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: 8, color: 'var(--text-primary)' }}>{seg.name}</h3>
+                  <button onClick={(e) => handleDelete(seg._id, e)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', opacity: 0.7, padding: 4 }} title="Delete Segment">
+                    🗑️
+                  </button>
+                </div>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', flex: 1, marginBottom: 20 }}>{seg.description || 'No description provided.'}</p>
                 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: 16, borderTop: '1px solid var(--border-primary)' }}>
