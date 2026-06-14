@@ -10,18 +10,30 @@ export default function CustomersPage() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
 
+  // Debounce the search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (debouncedSearch !== search) {
+        setDebouncedSearch(search);
+        setPage(1); // Reset to page 1 when search term actually changes
+      }
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search, debouncedSearch]);
+
   useEffect(() => {
     fetchCustomers();
-  }, [page, search]);
+  }, [page, debouncedSearch]);
 
   const fetchCustomers = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/customers?page=${page}&limit=10&search=${search}`);
+      const res = await fetch(`/api/customers?page=${page}&limit=10&search=${debouncedSearch}`);
       const data = await res.json();
       setCustomers(data.customers || []);
       setTotalPages(data.totalPages || 1);
@@ -65,7 +77,7 @@ export default function CustomersPage() {
                 className="input" 
                 placeholder="Search by name, email or phone..." 
                 value={search}
-                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                onChange={(e) => setSearch(e.target.value)}
                 style={{ maxWidth: 300 }}
               />
             </div>
