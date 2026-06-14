@@ -80,14 +80,25 @@ export async function POST(request) {
         }
         else if (name === 'createCampaign') {
           const campaigns = await getCollection('campaigns');
+          const segments = await getCollection('segments');
+          
           let segId = args.segmentId;
-          try { segId = new require('mongodb').ObjectId(segId); } catch(e) {}
+          
+          if (!segId && args.segmentName) {
+            // Try to look up the segment by name (case insensitive)
+            const matchedSegment = await segments.findOne({ name: { $regex: new RegExp(args.segmentName, 'i') } });
+            if (matchedSegment) {
+              segId = matchedSegment._id;
+            }
+          }
+          
+          try { if (segId) segId = new require('mongodb').ObjectId(segId); } catch(e) {}
           
           const doc = {
             name: args.name,
-            segmentId: segId,
-            channel: args.channel,
-            messageTemplate: args.messageTemplate,
+            segmentId: segId || null,
+            channel: args.channel || 'whatsapp',
+            messageTemplate: args.messageTemplate || 'Hello!',
             subject: args.subject,
             status: 'draft',
             stats: { total: 0, sent: 0, delivered: 0, failed: 0, opened: 0, clicked: 0 },

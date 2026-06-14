@@ -115,6 +115,10 @@ export const CRM_TOOLS = [
           type: 'string',
           description: 'ID of the target segment'
         },
+        segmentName: {
+          type: 'string',
+          description: 'Name of the target segment (use this if you don\'t know the ID)'
+        },
         channel: {
           type: 'string',
           description: 'Delivery channel: "whatsapp", "sms", "email", or "rcs"'
@@ -128,7 +132,7 @@ export const CRM_TOOLS = [
           description: 'Email subject line (only for email channel)'
         }
       },
-      required: ['name', 'segmentId', 'channel', 'messageTemplate']
+      required: ['name', 'channel', 'messageTemplate']
     }
   },
   {
