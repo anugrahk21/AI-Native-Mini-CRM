@@ -37,12 +37,12 @@ export default function SegmentsPage() {
               <h1 className="page-title">Segments</h1>
               <p className="page-subtitle">Group your customers for targeted campaigns.</p>
             </div>
-            <button className="btn btn-primary">✨ Create with AI</button>
+            <button className="btn btn-primary" onClick={() => window.dispatchEvent(new CustomEvent('open-ai-chat', { detail: { prompt: 'Create a segment of ' } }))}>✨ Create with AI</button>
           </div>
 
           <div className="grid-3">
             {/* Create New Card */}
-            <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, borderStyle: 'dashed', cursor: 'pointer' }}>
+            <div className="glass-card" onClick={() => window.dispatchEvent(new CustomEvent('open-ai-chat', { detail: { prompt: 'Create a segment of ' } }))} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, borderStyle: 'dashed', cursor: 'pointer' }}>
               <div style={{ fontSize: '2rem', marginBottom: 12 }}>+</div>
               <h3 style={{ fontWeight: 600 }}>Create Segment</h3>
               <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', textAlign: 'center', marginTop: 8 }}>Build rules manually or ask AI to generate an audience.</p>

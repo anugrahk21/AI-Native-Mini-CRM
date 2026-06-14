@@ -49,7 +49,7 @@ export default function CampaignsPage() {
               <h1 className="page-title">Campaigns</h1>
               <p className="page-subtitle">Create and track your messaging campaigns.</p>
             </div>
-            <button className="btn btn-primary">✨ Create with AI</button>
+            <button className="btn btn-primary" onClick={() => window.dispatchEvent(new CustomEvent('open-ai-chat', { detail: { prompt: 'Draft a campaign for ' } }))}>✨ Create with AI</button>
           </div>
 
           <div className="glass-card">
@@ -62,7 +62,7 @@ export default function CampaignsPage() {
                 <div className="empty-icon">📣</div>
                 <h3>No campaigns yet</h3>
                 <p>Create your first campaign to start reaching customers.</p>
-                <button className="btn btn-primary">Create Campaign</button>
+                <button className="btn btn-primary" onClick={() => window.dispatchEvent(new CustomEvent('open-ai-chat', { detail: { prompt: 'Draft a campaign for ' } }))}>Create Campaign</button>
               </div>
             ) : (
               <div className="data-table-wrapper">

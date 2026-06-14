@@ -18,6 +18,20 @@ export default function AIChatPanel() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  useEffect(() => {
+    const handleOpenChat = (e) => {
+      setIsOpen(true);
+      if (e.detail?.prompt) {
+        setInput(e.detail.prompt);
+        setTimeout(() => {
+          document.getElementById('ai-chat-input')?.focus();
+        }, 100);
+      }
+    };
+    window.addEventListener('open-ai-chat', handleOpenChat);
+    return () => window.removeEventListener('open-ai-chat', handleOpenChat);
+  }, []);
+
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
@@ -137,6 +151,7 @@ export default function AIChatPanel() {
 
         <div className="ai-chat-input-area">
           <input
+            id="ai-chat-input"
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
