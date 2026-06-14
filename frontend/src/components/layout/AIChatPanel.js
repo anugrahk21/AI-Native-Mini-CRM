@@ -61,6 +61,10 @@ export default function AIChatPanel() {
         let content = data.response || 'I processed your request.';
         if (data.functionCall) {
           content = `🔧 *Executed: ${data.functionCall.name}*\n\n${content}`;
+          // If the AI modified data, tell the rest of the app to refresh
+          if (['createSegment', 'createCampaign', 'sendCampaign'].includes(data.functionCall.name)) {
+            window.dispatchEvent(new CustomEvent('refresh-data'));
+          }
         }
         setMessages(prev => [...prev, {
           role: 'assistant',

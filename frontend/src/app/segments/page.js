@@ -11,6 +11,10 @@ export default function SegmentsPage() {
 
   useEffect(() => {
     fetchSegments();
+
+    const handleRefresh = () => fetchSegments();
+    window.addEventListener('refresh-data', handleRefresh);
+    return () => window.removeEventListener('refresh-data', handleRefresh);
   }, []);
 
   const fetchSegments = async () => {

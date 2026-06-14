@@ -55,8 +55,59 @@ export async function POST(request) {
           const data = await campaigns.findOne(campQuery);
           functionResult = data ? { name: data.name, stats: data.stats } : { error: 'Not found' };
         }
+        else if (name === 'createSegment') {
+          const segments = await getCollection('segments');
+          const customers = await getCollection('customers');
+          
+          let count = 0;
+          if (args.conditions) {
+            const query = buildMongoQuery(args.conditions, args.logic || 'AND');
+            count = await customers.countDocuments(query);
+          }
+          
+          const doc = {
+            name: args.name,
+            description: args.description || '',
+            rules: { conditions: args.conditions, logic: args.logic || 'AND' },
+            customerCount: count,
+            aiGenerated: true,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          };
+          
+          const result = await segments.insertOne(doc);
+          functionResult = { success: true, segmentId: result.insertedId, customerCount: count };
+        }
+        else if (name === 'createCampaign') {
+          const campaigns = await getCollection('campaigns');
+          let segId = args.segmentId;
+          try { segId = new require('mongodb').ObjectId(segId); } catch(e) {}
+          
+          const doc = {
+            name: args.name,
+            segmentId: segId,
+            channel: args.channel,
+            messageTemplate: args.messageTemplate,
+            subject: args.subject,
+            status: 'draft',
+            stats: { total: 0, sent: 0, delivered: 0, failed: 0, opened: 0, clicked: 0 },
+            aiGenerated: true,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          };
+          
+          const result = await campaigns.insertOne(doc);
+          functionResult = { success: true, campaignId: result.insertedId, status: 'draft' };
+        }
+        else if (name === 'sendCampaign') {
+          functionResult = { success: true, message: `Campaign ${args.campaignId} send process initiated. User can check campaigns page for progress.` };
+          // For simplicity in AI context, we mock the trigger here, since actual sending logic is complex and done via API.
+          // Real sending is best triggered by the user in the UI, or by doing a POST to our own endpoint.
+          // But since the user wants full automation, we can just do a local fetch to the send endpoint.
+          const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+          fetch(`${APP_URL}/api/campaigns/${args.campaignId}/send`, { method: 'POST' }).catch(console.error);
+        }
         else {
-          // Generic response for complex actions for now
           functionResult = { success: true, message: `Function ${name} processed.` };
         }
 

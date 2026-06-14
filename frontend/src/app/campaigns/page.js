@@ -13,6 +13,10 @@ export default function CampaignsPage() {
 
   useEffect(() => {
     fetchCampaigns();
+
+    const handleRefresh = () => fetchCampaigns();
+    window.addEventListener('refresh-data', handleRefresh);
+    return () => window.removeEventListener('refresh-data', handleRefresh);
   }, []);
 
   const fetchCampaigns = async () => {
